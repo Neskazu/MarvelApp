@@ -65,6 +65,8 @@ dependencies {
     // Snap
     implementation("androidx.compose.foundation:foundation:1.5.0")
     implementation("androidx.compose.material:material:1.5.0")
+    //nav
+    implementation ("androidx.navigation:navigation-compose:2.7.3")
     //
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
