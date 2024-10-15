@@ -65,14 +65,16 @@ fun HeroListScreen(onHeroClick: (Int) -> Unit) {
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .padding(bottom = 16.dp)
             )
 
             // Hero list
             LazyRow(
                 state = listState,
+                verticalAlignment = Alignment.CenterVertically,
                 flingBehavior = snapFlingBehavior,
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+
             ) {
                 items(HeroRepository.heroes) { hero ->
                     HeroItem(hero = hero, onClick = { onHeroClick(hero.id) })
@@ -127,6 +129,7 @@ fun HeroItem(hero: HeroModel, onClick: () -> Unit) {
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .fillMaxSize()
+
         )
 
         // Hero Name
