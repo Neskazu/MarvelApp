@@ -23,6 +23,7 @@ import com.example.marvelapp.data.HeroRepository
 import com.example.marvelapp.R
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,7 +31,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HeroListScreen(onHeroClick: (String) -> Unit) {
+fun HeroListScreen(onHeroClick: (Int) -> Unit) {
     val listState = rememberLazyListState()
     val snapFlingBehavior = rememberSnapFlingBehavior(lazyListState = listState)
 
@@ -74,7 +75,7 @@ fun HeroListScreen(onHeroClick: (String) -> Unit) {
                 modifier = Modifier.fillMaxSize(),
             ) {
                 items(HeroRepository.heroes) { hero ->
-                    HeroItem(hero = hero, onClick = { onHeroClick(hero.name) })
+                    HeroItem(hero = hero, onClick = { onHeroClick(hero.id) })
                 }
             }
         }
@@ -117,6 +118,7 @@ fun HeroItem(hero: HeroModel, onClick: () -> Unit) {
             .width(cardWidth)
             .height(cardHeight)
             .padding(cardPadding)
+            .clickable { onClick() }
     ) {
         // Hero image
         AsyncImage(
