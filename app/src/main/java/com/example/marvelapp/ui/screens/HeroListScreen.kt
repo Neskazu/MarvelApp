@@ -27,7 +27,13 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
+import com.example.marvelapp.ui.utils.Sizes
+import com.example.marvelapp.ui.utils.Paddings
+import com.example.marvelapp.ui.utils.screenWidthDp
+import com.example.marvelapp.ui.utils.screenHeightDp
+import com.example.marvelapp.ui.components.BackgroundTriangles
+import com.example.marvelapp.ui.components.HeroItem
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -59,7 +65,7 @@ fun HeroListScreen(onHeroClick: (Int) -> Unit) {
 
             // H1
             Text(
-                text = "Choose your hero",
+                text = stringResource(R.string.choose_hero),
                 fontSize = 32.sp,
                 color = Color.White,
                 fontWeight = FontWeight.Bold,
@@ -83,69 +89,6 @@ fun HeroListScreen(onHeroClick: (Int) -> Unit) {
         }
     }
 }
-
-@Composable
-fun BackgroundTriangles() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.Black)
-    ) {
-        Canvas(
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-            val path = Path().apply {
-                moveTo(0f, size.height)
-                lineTo(size.width, size.height)
-                lineTo(size.width, size.height / 3)
-                close()
-            }
-            drawPath(path, Color.Red)
-        }
-    }
-}
-
-@Composable
-fun HeroItem(hero: HeroModel, onClick: () -> Unit) {
-    // device info + vars
-    val configuration = LocalConfiguration.current
-    val screenWidth = configuration.screenWidthDp.dp
-    val screenHeight = configuration.screenHeightDp.dp
-    val cardWidth = screenWidth * 0.85f
-    val cardHeight = screenHeight * 0.7f
-    val  cardPadding = 16.dp
-    Box(
-        modifier = Modifier
-            .width(cardWidth)
-            .height(cardHeight)
-            .padding(cardPadding)
-            .clickable { onClick() }
-    ) {
-        // Hero image
-        AsyncImage(
-            model = hero.imageUrl,
-            contentDescription = hero.name,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .fillMaxSize()
-
-        )
-
-        // Hero Name
-        Text(
-            text = hero.name,
-            color = Color.White,
-            fontSize = 28.sp,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Left,
-            modifier = Modifier
-                .align(Alignment.BottomStart)
-                .padding(16.dp)
-        )
-    }
-}
-
 @Preview(showBackground = true)
 @Composable
 fun PreviewHeroListScreen() {

@@ -68,6 +68,7 @@ dependencies {
     //nav
     implementation ("androidx.navigation:navigation-compose:2.7.3")
     //
+    implementation ("com.squareup.retrofit2:retrofit:2.11.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
