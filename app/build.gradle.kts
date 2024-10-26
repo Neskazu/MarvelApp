@@ -50,15 +50,24 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
+    implementation(platform(libs.androidx.compose.bom)) // Используем BOM для версии Compose
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+
+    //added
+    // Coil for images
+    implementation("io.coil-kt:coil-compose:2.2.2")
+    // Snap
+    implementation("androidx.compose.foundation:foundation:1.5.0")
+    implementation("androidx.compose.material:material:1.5.0")
+    //nav
+    implementation ("androidx.navigation:navigation-compose:2.7.3")
+    //
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
