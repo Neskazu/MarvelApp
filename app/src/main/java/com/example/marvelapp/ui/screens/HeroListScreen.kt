@@ -25,6 +25,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.res.stringResource
@@ -34,12 +36,19 @@ import com.example.marvelapp.ui.utils.screenWidthDp
 import com.example.marvelapp.ui.utils.screenHeightDp
 import com.example.marvelapp.ui.components.BackgroundTriangles
 import com.example.marvelapp.ui.components.HeroItem
+import com.example.marvelapp.ui.viewmodels.HeroViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HeroListScreen(onHeroClick: (Int) -> Unit) {
+fun HeroListScreen(viewModel: HeroViewModel, onHeroClick: (Int) -> Unit) {
     val listState = rememberLazyListState()
     val snapFlingBehavior = rememberSnapFlingBehavior(lazyListState = listState)
+
+    // Вызов fetch при первом запуске
+    LaunchedEffect(Unit) {
+        viewModel.fetchHeroes(11) // надо в ресурсах создать переменную
+    }
+    val heroesFromApi = viewModel.heroList.collectAsState().value ?: emptyList()
 
     Box(
         modifier = Modifier
@@ -80,17 +89,11 @@ fun HeroListScreen(onHeroClick: (Int) -> Unit) {
                 flingBehavior = snapFlingBehavior,
                 modifier = Modifier
                     .fillMaxSize()
-
             ) {
-                items(HeroRepository.heroes) { hero ->
+                items(heroesFromApi) { hero ->
                     HeroItem(hero = hero, onClick = { onHeroClick(hero.id) })
                 }
             }
         }
     }
-}
-@Preview(showBackground = true)
-@Composable
-fun PreviewHeroListScreen() {
-    HeroListScreen(onHeroClick = {})
 }

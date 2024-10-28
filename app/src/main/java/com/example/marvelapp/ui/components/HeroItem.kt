@@ -37,14 +37,13 @@ fun HeroItem(hero: HeroModel, onClick: () -> Unit) {
     ) {
         // Hero image
         AsyncImage(
-            model = hero.imageUrl,
+            model =  hero.thumbnail.getFullUrl(),
             contentDescription = hero.name,
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .fillMaxSize()
 
         )
-
         // Hero Name
         Text(
             text = hero.name,

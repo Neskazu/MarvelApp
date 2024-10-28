@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("org.jetbrains.kotlin.kapt")
 }
 
 android {
@@ -58,7 +59,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-
+    //TODO перенести это все в либы
     //added
     // Coil for images
     implementation("io.coil-kt:coil-compose:2.2.2")
@@ -67,8 +68,13 @@ dependencies {
     implementation("androidx.compose.material:material:1.5.0")
     //nav
     implementation ("androidx.navigation:navigation-compose:2.7.3")
-    //
+    //network
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
     implementation ("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation ("com.squareup.retrofit2:converter-moshi:2.11.0")
+    implementation("com.squareup.moshi:moshi-kotlin:1.15.1")
+    //codegen
+    kapt ("com.squareup.moshi:moshi-kotlin-codegen:1.15.1")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
