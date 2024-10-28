@@ -8,22 +8,31 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.example.marvelapp.data.HeroRepository
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
+import com.example.marvelapp.ui.viewmodels.HeroViewModel
 
 @Composable
-fun HeroDetailScreen(heroId: Int, navController: NavController) {
+fun HeroDetailScreen(viewModel: HeroViewModel, heroId: Int, navController: NavController) {
+    LaunchedEffect(Unit) {
+        viewModel.fetchHeroDetails(heroId)
+    }
     // Hero by id
-    val hero = HeroRepository.heroes.find { it.id == heroId }
+    val hero by viewModel.heroDetails.collectAsState()
 
+    //Возможно стоит немного поменять логику чтобы избавиться от it
     hero?.let {
         Box (
             modifier = Modifier
@@ -31,7 +40,7 @@ fun HeroDetailScreen(heroId: Int, navController: NavController) {
         ) {
             // Hero image
             AsyncImage(
-                model = it.imageUrl,
+                model = it.thumbnail.getFullUrl(),
                 contentDescription = it.name,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -60,7 +69,7 @@ fun HeroDetailScreen(heroId: Int, navController: NavController) {
             {
                 // Name
                 Text(
-                    text = hero.name,
+                    text = it.name,
                     color = Color.White,
                     fontSize = 45.sp,
                     fontWeight = FontWeight.Bold,
@@ -69,12 +78,20 @@ fun HeroDetailScreen(heroId: Int, navController: NavController) {
 
                 // Desc
                 Text(
-                    text = hero.description,
+                    text = it.getSmallDescription(),
                     color = Color.White,
                     fontSize = 28.sp,
                     fontWeight = FontWeight.Normal,
                     textAlign = TextAlign.Left,
+                    //так себе решение но outline ничем не лучше
+                    style = TextStyle(
+                        shadow = Shadow(
+                            color = Color.Black,
+                            blurRadius = 0f
+                        )
+                    )
                 )
+
             }
         }
     }
