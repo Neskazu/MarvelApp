@@ -22,6 +22,7 @@ import coil.compose.AsyncImage
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
+import com.example.marvelapp.ui.components.BackgroundTriangles
 import com.example.marvelapp.ui.viewmodels.HeroViewModel
 
 @Composable
@@ -31,67 +32,81 @@ fun HeroDetailScreen(viewModel: HeroViewModel, heroId: Int, navController: NavCo
     }
     // Hero by id
     val hero by viewModel.heroDetails.collectAsState()
-
-    //Возможно стоит немного поменять логику чтобы избавиться от it
-    hero?.let {
-        Box (
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-            // Hero image
-            AsyncImage(
-                model = it.thumbnail.getFullUrl(),
-                contentDescription = it.name,
-                contentScale = ContentScale.Crop,
+    val errorMessage = viewModel.error.collectAsState().value
+    Box (
+        modifier = Modifier
+            .fillMaxSize()
+    ){
+        if(errorMessage!=null)
+        {
+            BackgroundTriangles()
+            Text(
+                text = errorMessage.toString(),
+                fontSize = 32.sp,
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
                 modifier = Modifier
-                    .fillMaxSize()
+                    .align(Alignment.Center)
             )
-            // Back button
-            IconButton(
-                onClick = { navController.popBackStack() },
-                modifier = Modifier
-                    .align(Alignment.TopStart)
-            ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Back",
-                    tint = Color.White,
-                    modifier = Modifier.size(32.dp)
+        }
+        else{
+            //Возможно стоит немного поменять логику чтобы избавиться от it
+            hero?.let {
+                // Hero image
+                AsyncImage(
+                    model = it.thumbnail.getFullUrl(),
+                    contentDescription = it.name,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxSize()
                 )
-            }
+                // Back button
+                IconButton(
+                    onClick = { navController.popBackStack() },
+                    modifier = Modifier
+                        .align(Alignment.TopStart)
+                ) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Back",
+                        tint = Color.White,
+                        modifier = Modifier.size(32.dp)
+                    )
+                }
 
-            Column(
-                modifier = Modifier
-                    .align(Alignment.BottomStart)
-                    .padding(16.dp)
-                    .fillMaxWidth()
-            )
-            {
-                // Name
-                Text(
-                    text = it.name,
-                    color = Color.White,
-                    fontSize = 45.sp,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Left,
+                Column(
+                    modifier = Modifier
+                        .align(Alignment.BottomStart)
+                        .padding(16.dp)
+                        .fillMaxWidth()
                 )
+                {
+                    // Name
+                    Text(
+                        text = it.name,
+                        color = Color.White,
+                        fontSize = 45.sp,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Left,
+                    )
 
-                // Desc
-                Text(
-                    text = it.getSmallDescription(),
-                    color = Color.White,
-                    fontSize = 28.sp,
-                    fontWeight = FontWeight.Normal,
-                    textAlign = TextAlign.Left,
-                    //так себе решение но outline ничем не лучше
-                    style = TextStyle(
-                        shadow = Shadow(
-                            color = Color.Black,
-                            blurRadius = 0f
+                    // Desc
+                    Text(
+                        text = it.getSmallDescription(),
+                        color = Color.White,
+                        fontSize = 28.sp,
+                        fontWeight = FontWeight.Normal,
+                        textAlign = TextAlign.Left,
+                        //так себе решение но outline ничем не лучше
+                        style = TextStyle(
+                            shadow = Shadow(
+                                color = Color.Black,
+                                blurRadius = 0f
+                            )
                         )
                     )
-                )
 
+                }
             }
         }
     }
