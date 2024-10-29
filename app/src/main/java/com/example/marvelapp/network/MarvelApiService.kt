@@ -25,7 +25,7 @@ interface MarvelApiService {
     ): Response<HeroApiResponse>
 
     companion object {
-        //todo: скрыть бы это
+        //todo: Перенести в другой файл
         private const val BASE_URL = "https://gateway.marvel.com/"
         private const val API_KEY = "80cd745bf6e1a23dadcbc6c7e4a97f2e"
         private const val PRIVATE_KEY = "9af3114f847114be1ca4473a989d2fe34eb8361f"
