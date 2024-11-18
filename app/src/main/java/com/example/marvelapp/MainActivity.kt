@@ -8,11 +8,15 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.marvelapp.data.HeroRepository
+import androidx.room.Dao
+import androidx.room.Room
+import com.example.marvelapp.data.CharacterRepository
+import com.example.marvelapp.data.database.AppDatabase
+import com.example.marvelapp.data.database.CharacterDao
 import com.example.marvelapp.network.MarvelApiService
 import com.example.marvelapp.ui.screens.HeroDetailScreen
 import com.example.marvelapp.ui.screens.HeroListScreen
-import com.example.marvelapp.ui.viewmodels.HeroViewModel
+import com.example.marvelapp.ui.viewmodels.CharacterViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,9 +24,16 @@ class MainActivity : ComponentActivity() {
         // ToDo: сделать фабрики?
         // Инициализация MarvelApiService
         val apiService = MarvelApiService.create()
-        // Инициализация HeroRepository с использованием apiService
-        val repository = HeroRepository(apiService)
-        val viewModel = HeroViewModel(repository)
+        val database = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java,
+            "marvelDB"
+        ).build()
+        // get CharacterDao
+        val characterDao = database.characterDao()
+        //init rep+view
+        val repository = CharacterRepository(apiService,characterDao)
+        val viewModel = CharacterViewModel(repository);
         setContent {
             val navController = rememberNavController()
             MarvelNavHost(navController, viewModel)
@@ -31,7 +42,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MarvelNavHost(navController: NavHostController, viewModel: HeroViewModel) {
+fun MarvelNavHost(navController: NavHostController, viewModel: CharacterViewModel) {
     NavHost(navController = navController, startDestination = "heroList") {
         composable("heroList") {
             HeroListScreen(viewModel = viewModel, onHeroClick = { heroId ->

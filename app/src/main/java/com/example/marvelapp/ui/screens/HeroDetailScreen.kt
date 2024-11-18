@@ -23,15 +23,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
 import com.example.marvelapp.ui.components.BackgroundTriangles
-import com.example.marvelapp.ui.viewmodels.HeroViewModel
+import com.example.marvelapp.ui.viewmodels.CharacterViewModel
 
 @Composable
-fun HeroDetailScreen(viewModel: HeroViewModel, heroId: Int, navController: NavController) {
+fun HeroDetailScreen(viewModel: CharacterViewModel, heroId: Int, navController: NavController) {
     LaunchedEffect(Unit) {
-        viewModel.fetchHeroDetails(heroId)
+        viewModel.fetchCharacterDetails(heroId)
     }
     // Hero by id
-    val hero by viewModel.heroDetails.collectAsState()
+    val hero by viewModel.characterDetails.collectAsState()
     val errorMessage = viewModel.error.collectAsState().value
     Box (
         modifier = Modifier
@@ -54,7 +54,7 @@ fun HeroDetailScreen(viewModel: HeroViewModel, heroId: Int, navController: NavCo
             hero?.let {
                 // Hero image
                 AsyncImage(
-                    model = it.thumbnail.getFullUrl(),
+                    model = it.imageUrl,
                     contentDescription = it.name,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
