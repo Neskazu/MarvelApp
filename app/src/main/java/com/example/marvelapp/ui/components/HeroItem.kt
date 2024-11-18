@@ -17,14 +17,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.example.marvelapp.data.HeroModel
+import com.example.marvelapp.data.models.CharacterUI
 import com.example.marvelapp.ui.utils.Paddings
 import com.example.marvelapp.ui.utils.Sizes
 import com.example.marvelapp.ui.utils.screenHeightDp
 import com.example.marvelapp.ui.utils.screenWidthDp
 
 @Composable
-fun HeroItem(hero: HeroModel, onClick: () -> Unit) {
+fun HeroItem(hero: CharacterUI, onClick: () -> Unit) {
     val cardWidth = screenWidthDp() * (Sizes.CardWidthFactor)
     val cardHeight = screenHeightDp() * (Sizes.CardHeightFactor)
     val  cardPadding = (Paddings.CardPadding)
@@ -37,7 +37,7 @@ fun HeroItem(hero: HeroModel, onClick: () -> Unit) {
     ) {
         // Hero image
         AsyncImage(
-            model =  hero.thumbnail.getFullUrl(),
+            model =  hero.imageUrl,
             contentDescription = hero.name,
             contentScale = ContentScale.Crop,
             modifier = Modifier

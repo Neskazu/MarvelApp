@@ -1,6 +1,5 @@
 package com.example.marvelapp.network
 
-import com.example.marvelapp.data.HeroApiResponse
 import com.squareup.moshi.Moshi
 import okhttp3.OkHttpClient
 import retrofit2.Response
@@ -14,16 +13,16 @@ import java.security.MessageDigest
 import java.util.*
 
 interface MarvelApiService {
+
     @GET("v1/public/characters")
-    suspend fun getHeroes(
+    suspend fun getCharacters(
         @Query("limit") limit: Int,
-    ): Response<HeroApiResponse>
+    ): Response<CharacterApiResponse>
 
     @GET("v1/public/characters/{characterId}")
-    suspend fun getHeroDetails(
+    suspend fun getCharcterDetails(
         @Path("characterId") characterId: Int,
-    ): Response<HeroApiResponse>
-
+    ): Response<CharacterApiResponse>
     companion object {
         //todo: Перенести в другой файл
         private const val BASE_URL = "https://gateway.marvel.com/"

@@ -22,21 +22,21 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.res.stringResource
 import com.example.marvelapp.ui.components.BackgroundTriangles
 import com.example.marvelapp.ui.components.HeroItem
-import com.example.marvelapp.ui.viewmodels.HeroViewModel
+import com.example.marvelapp.ui.viewmodels.CharacterViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HeroListScreen(viewModel: HeroViewModel, onHeroClick: (Int) -> Unit) {
+fun HeroListScreen(viewModel: CharacterViewModel, onHeroClick: (Int) -> Unit) {
     //init values
     val listState = rememberLazyListState()
     val snapFlingBehavior = rememberSnapFlingBehavior(lazyListState = listState)
 
     // Вызов fetch при первом запуске
     LaunchedEffect(Unit) {
-        viewModel.fetchHeroes(11) // надо в ресурсах создать переменную
+        viewModel.fetchCharacters(11) // надо в ресурсах создать переменную
     }
     //по идее можно как в details сделать не знаю какой вариант лучше
-    val heroesFromApi = viewModel.heroList.collectAsState().value ?: emptyList()
+    val heroesFromApi = viewModel.characterList.collectAsState().value ?: emptyList()
     val errorMessage = viewModel.error.collectAsState().value
 
     Box(
